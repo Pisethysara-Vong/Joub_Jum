@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:joub_jum/consts.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider.dart';
@@ -208,9 +209,9 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
                     child: ElevatedButton(
                       onPressed: _createJoubJum,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightGreen,
+                        backgroundColor: appBarColor,
                       ),
-                      child: const Text('Create'),
+                      child: const Text('Create JoubJum', style: TextStyle(color: Colors.white, fontSize: 22),),
                     ),
                   ),
                 ],
