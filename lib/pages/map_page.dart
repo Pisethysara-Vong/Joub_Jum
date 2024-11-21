@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:joub_jum/consts.dart';
-import 'package:joub_jum/pages/menu_bar_pages/createJoubJum.dart';
 import 'package:location/location.dart';
 import 'package:joub_jum/pages/search_page.dart';
 import 'package:joub_jum/pages/menu_bar_pages/account.dart';
@@ -25,20 +25,21 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Location _locationController = Location();
   final PanelController _panelController = PanelController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final Completer<GoogleMapController> _mapController =
-  Completer<GoogleMapController>();
+      Completer<GoogleMapController>();
 
   LatLng? _selectedP;
   LatLng? _currentP;
   List? _photoUrl;
   String? userEmail;
   String? _placeName;
-  String? _placeId;
-
-
   double _buttonBottomPadding = 84;
-  double _sliderMaxHeight = 400;
+
+  String? _placeID;
+  late double _sliderMaxHeight;
+
 
   Map<PolylineId, Polyline> polylines = {};
   late BitmapDescriptor currentLocationMarker;
@@ -54,70 +55,59 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  void setCustomMapPin() async {
-    currentLocationMarker = await BitmapDescriptor.asset(
-        ImageConfiguration(size: Size(20, 20), devicePixelRatio: 2.5),
-        'assets/icons/current_marker.png');
-  }
-
-
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    setState(() {
+      _sliderMaxHeight = screenHeight/1.5;
+    });
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: appBar(),
       drawer: SizedBox(width: 300, child: buildDrawer()),
       body: _currentP == null
           ? const Center(
-        child: Text("Loading..."),
-      )
+              child: Text("Loading..."),
+            )
           : Stack(
-        children: [
-          GoogleMap(
-            //when map is created, we have access to controller
-            onMapCreated: ((GoogleMapController controller) =>
-                _mapController.complete(controller)),
-            initialCameraPosition:
-            CameraPosition(target: _currentP!, zoom: 13),
-            markers: {
-              //Current location of user
-              Marker(
-                  markerId: const MarkerId("_currentLocation"),
-                  icon: currentLocationMarker,
-                  position: _currentP!),
-              if (_selectedP != null) // Check if _destination is not null
-                Marker(
-                  markerId: const MarkerId("_destinationLocation"),
-                  icon: BitmapDescriptor.defaultMarker,
-                  position: _selectedP!,
+              children: [
+                GoogleMap(
+                  //when map is created, we have access to controller
+                  onMapCreated: ((GoogleMapController controller) =>
+                      _mapController.complete(controller)),
+                  initialCameraPosition:
+                      CameraPosition(target: _currentP!, zoom: 13),
+                  markers: {
+                    //Current location of user
+                    Marker(
+                        markerId: const MarkerId("_currentLocation"),
+                        icon: currentLocationMarker,
+                        position: _currentP!),
+                    if (_selectedP != null) // Check if _destination is not null
+                      Marker(
+                        markerId: const MarkerId("_destinationLocation"),
+                        icon: BitmapDescriptor.defaultMarker,
+                        position: _selectedP!,
+                      ),
+                  },
+                  polylines: Set<Polyline>.of(polylines.values),
                 ),
-            },
-            polylines: Set<Polyline>.of(polylines.values),
-          ),
-          buildCurrentLocationButton(),
-        ],
-      ),
+                buildCurrentLocationButton(),
+              ],
+            ),
     );
   }
 
   Stack buildCurrentLocationButton() {
     return Stack(children: [
       Align(
-        alignment: Alignment.centerRight,
-        child: ElevatedButton(onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CreateJoubJumPage(location: _placeName!, placeId: _placeId!,),
-            ),
-          );
-        }, child: Text('Setup Joubjum')),
-      ),
-      Align(
         alignment: Alignment.bottomRight,
         child: Padding(
           padding: EdgeInsets.only(bottom: _buttonBottomPadding, right: 25),
           child: FloatingActionButton(
+            backgroundColor: boxColor,
+            foregroundColor: appBarColor,
             onPressed: () {
               _cameraToPosition(_currentP!);
             },
@@ -126,31 +116,35 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       if (_selectedP != null)
-        SlidingUpPanel(controller: _panelController,
+        SlidingUpPanel(
+          controller: _panelController,
           maxHeight: _sliderMaxHeight,
           renderPanelSheet: false,
-          panel: floatingPanel(_photoUrl!, _placeName!),
+          panel: floatingPanel(_photoUrl!, _placeName!, _placeID!),
           collapsed: floatingCollapsed(),
           onPanelSlide: (double position) {
             setState(() {
-              _buttonBottomPadding = 84 + (0.75 * position * _sliderMaxHeight);
+              _buttonBottomPadding = 84 + (0.8 * position * _sliderMaxHeight);
             });
           },
-
-
         ),
     ]);
   }
 
   Drawer buildDrawer() {
     return Drawer(
-      backgroundColor: buttonColor,
+      backgroundColor: drawerBottom,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('User1', style: TextStyle(color: Colors.black,),),
-            accountEmail: Text(userEmail!, style: TextStyle(color: Colors.black)),
+            accountName: const Text(
+              'User1',
+              style: TextStyle(color: Colors.black, fontFamily: "Raritas"),
+            ),
+            accountEmail: Text(userEmail!,
+                style: const TextStyle(
+                    color: Colors.black, fontFamily: "Raritas")),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -161,41 +155,54 @@ class _MapPageState extends State<MapPage> {
                 ),
               ),
             ),
-            decoration: const BoxDecoration(
-                color: menuBarColor
-            ),
+            decoration: const BoxDecoration(color: drawerTop),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle_rounded),
-            title: const Text('Account'),
+            leading: const Icon(Icons.account_circle_rounded),
+            title: const Text(
+              'Account',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
             onTap: () {
               navigateToNextScreen(context, const AccountPage());
             },
           ),
           ListTile(
-            leading: Icon(Icons.recommend_rounded),
-            title: const Text('Recommendation'),
+            leading: const Icon(Icons.recommend_rounded),
+            title: const Text(
+              'Recommendation',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
             onTap: () {
               navigateWithData(context, const RecommendationPage());
             },
           ),
           ListTile(
-            leading: Icon(Icons.insert_invitation_rounded),
-            title: const Text('Invitation'),
+            leading: const Icon(Icons.insert_invitation_rounded),
+            title: const Text(
+              'Invitation',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
             onTap: () {
               navigateWithData(context, const InvitationPage());
             },
           ),
           ListTile(
-            leading: Icon(Icons.map_rounded),
-            title: const Text('JoubJum'),
+            leading: const Icon(Icons.map_rounded),
+            title: const Text(
+              'JoubJum',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
             onTap: () {
               navigateWithData(context, const JoubJumPage());
             },
           ),
           ListTile(
-            leading: Icon(Icons.people_alt_rounded),
-            title: const Text('Friend'),
+            leading: const Icon(Icons.people_alt_rounded),
+            title: const Text(
+              'Friend',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
             onTap: () {
               navigateToNextScreen(context, const FriendPage());
             },
@@ -212,7 +219,8 @@ class _MapPageState extends State<MapPage> {
       elevation: 0,
       title: const Text(
         'Location',
-        style: TextStyle(color: Colors.black, fontSize: 18),
+        style:
+            TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'Raritas'),
       ),
       centerTitle: true,
       leading: Builder(builder: (context) {
@@ -287,7 +295,7 @@ class _MapPageState extends State<MapPage> {
         request: PolylineRequest(
             origin: PointLatLng(_currentP!.latitude, _currentP!.longitude),
             destination:
-            PointLatLng(_selectedP!.latitude, _selectedP!.longitude),
+                PointLatLng(_selectedP!.latitude, _selectedP!.longitude),
             mode: TravelMode.driving));
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
@@ -320,7 +328,7 @@ class _MapPageState extends State<MapPage> {
         const curve = Curves.ease;
 
         var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -330,14 +338,15 @@ class _MapPageState extends State<MapPage> {
     ));
 
     if (result != null) {
-      Navigator.pop(context);
       setState(() {
         _selectedP = result[0];
         _photoUrl = result[1];
         _placeName = result[2];
-        _placeId = result[3];
+        _placeID = result[3];
       });
-
+      if (_scaffoldKey.currentState!.isDrawerOpen) {
+        Navigator.of(context).pop();
+      }
       _cameraToPosition(_selectedP!).then((_) {
         getPolylinePoints().then((coordinate) {
           generatePolylineFromPoints(coordinate);
@@ -345,6 +354,7 @@ class _MapPageState extends State<MapPage> {
       });
     }
   }
+
   //TODO add username as well
   Future<void> getCurrentUserEmail() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -353,5 +363,11 @@ class _MapPageState extends State<MapPage> {
         userEmail = user.email;
       });
     }
+  }
+
+  void setCustomMapPin() async {
+    currentLocationMarker = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(20, 20), devicePixelRatio: 2.5),
+        'assets/icons/current_marker.png');
   }
 }

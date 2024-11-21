@@ -6,11 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:joub_jum/firebase_options.dart';
 import 'package:joub_jum/pages/auth_pages/register_screen.dart';
 import 'package:joub_jum/pages/map_page.dart';
-import 'package:joub_jum/pages/menu_bar_pages/account.dart';
-import 'package:joub_jum/pages/menu_bar_pages/friend.dart';
-import 'package:joub_jum/pages/menu_bar_pages/invitation.dart';
-import 'package:joub_jum/pages/menu_bar_pages/joub_jum.dart';
-import 'package:joub_jum/pages/menu_bar_pages/recommendation.dart';
+import 'package:joub_jum/pages/menu_bar_pages/Provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +22,8 @@ Future<void> main() async {
   );
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -33,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Starter Template',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),

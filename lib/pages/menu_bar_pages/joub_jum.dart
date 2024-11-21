@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:joub_jum/consts.dart';
-import 'package:joub_jum/pages/menu_bar_pages/joub_jumDetails.dart';
+import 'package:joub_jum/pages/menu_bar_pages/joub_jum_details.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider.dart';
@@ -19,7 +19,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
     final invitationAndJoubJumState = Provider.of<InvitationsAndJoubJumsState>(context);
     final joubjums = invitationAndJoubJumState.joubJums;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bodyColor,
       appBar: _buildAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              color: buttonColor,
+              color: boxColor,
             ),
             padding: const EdgeInsets.all(12.0),
             child: Row(
@@ -79,11 +79,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
                           Expanded(
                             child: Text(
                               'JoubJum with ${joubjum['user']}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(fontSize: 20, fontFamily: 'Raritas', color: bodyColor),
                             ),
                           ),
                         ],
@@ -92,7 +88,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
                       Text(
                         'Date & Time: ${joubjum['date']}, ${joubjum['time']}\nLocation: ${joubjum['location']}',
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: appBarColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -142,9 +138,9 @@ class _JoubJumPageState extends State<JoubJumPage> {
     return AppBar(
       title: const Text(
         'JoubJums',
-        style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 25, fontFamily: 'Raritas'),
       ),
-      backgroundColor: const Color(0xFFcaffbf),
+      backgroundColor: appBarColor,
       elevation: 0.0,
       centerTitle: true,
       leading: IconButton(

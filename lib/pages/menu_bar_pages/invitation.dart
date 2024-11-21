@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:joub_jum/consts.dart';
-import 'package:joub_jum/pages/menu_bar_pages/invitationDetails.dart';
+import 'package:joub_jum/pages/menu_bar_pages/invitation_details.dart';
 import 'package:joub_jum/pages/menu_bar_pages/Provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,7 @@ class _InvitationPageState extends State<InvitationPage> {
     final invitationAndJoubJumState = Provider.of<InvitationsAndJoubJumsState>(context);
     final invitations = invitationAndJoubJumState.invitations;
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: bodyColor,
         appBar: _buildAppBar(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class _InvitationPageState extends State<InvitationPage> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: buttonColor,
+            color: boxColor,
           ),
           padding: const EdgeInsets.all(12.0),
           child: Row(
@@ -71,11 +71,7 @@ class _InvitationPageState extends State<InvitationPage> {
               Expanded(
                 child: Text(
                   '${invitation['user']} sent an invite',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 20, fontFamily: 'Raritas', color: bodyColor),
                 ),
               ),
               buildButtons(invitation),
@@ -178,9 +174,9 @@ class _InvitationPageState extends State<InvitationPage> {
     return AppBar(
       title: const Text(
         'Invitations',
-        style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 25, fontFamily: 'Raritas'),
       ),
-      backgroundColor: const Color(0xFFcaffbf),
+      backgroundColor: appBarColor,
       elevation: 0.0,
       centerTitle: true,
       leading: IconButton(

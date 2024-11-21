@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:joub_jum/consts.dart';
+import 'package:joub_jum/pages/menu_bar_pages/create_joubjum.dart';
 
 Widget floatingCollapsed() {
   return Container(
     decoration: const BoxDecoration(
-      color: appBarColor,
+      // color: Color(0xFFeddcfe),
+      color: drawerTop,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
     ),
-    margin: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+    margin: const EdgeInsets.fromLTRB(24.0, 48.0, 24.0, 0.0),
     child: const Center(
-      child: Icon(Icons.arrow_upward),
+      child: Icon(
+        IconData(0xf0532, fontFamily: 'MaterialIcons'),
+        size: 50,
+        color: boxColor,
+      ),
     ),
   );
 }
 
-Widget floatingPanel(List photoUrl, String placeName) {
+Widget floatingPanel(List photoUrl, String placeName, String placeID) {
   return Container(
     decoration: const BoxDecoration(
-      color: Colors.white,
+      color: bodyColor,
       borderRadius: BorderRadius.all(Radius.circular(24.0)),
       boxShadow: [
         BoxShadow(
@@ -27,24 +33,44 @@ Widget floatingPanel(List photoUrl, String placeName) {
         ),
       ],
     ),
-    margin: const EdgeInsets.all(24.0),
+    margin: const EdgeInsets.fromLTRB(24.0, 48.0, 24.0, 24.0),
     child: Column(
       children: [
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.all(8.0), // Optional padding
           child: Text(
-            placeName, // Example title
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+            placeName,
+            style: const TextStyle(fontSize: 18, fontFamily: 'Raritas'),
           ),
         ),
-        const SizedBox(height: 8),
+        const Divider(height: 8, color: appBarColor),
+        const SizedBox(height: 18),
         pictureSlider(photoUrl),
+        JoubJumButton(placeName: placeName, placeID: placeID,)
       ],
     ),
   );
 }
 
+class JoubJumButton extends StatelessWidget {
+  final String placeName;
+  final String placeID;
+
+  const JoubJumButton({
+    super.key, required this.placeID, required this.placeName
+   });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        navigateToNextScreen(context, CreateJoubJumPage(location: placeName, placeId: placeID));
+      },
+      child: const Text("+ JoubJum"),);
+  }
+}
 
 Widget pictureSlider(List photoUrl) {
   return Container(
@@ -53,28 +79,14 @@ Widget pictureSlider(List photoUrl) {
     child: ListView.separated(
       itemCount: photoUrl.length,
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       separatorBuilder: (context, index) => const SizedBox(width: 18),
       itemBuilder: (context, index) {
-        return Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: Image.network(photoUrl[index], fit: BoxFit.cover),
-          ),
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Image.network(photoUrl[index], fit: BoxFit.cover),
         );
       },
     ),
   );
 }
-
-
-
-//
-// borderRadius: BorderRadius.circular(24),
-// child: SizedBox.fromSize(
-// size: Size.fromRadius(48),
-// child: Image.network(
-// photoUrl[index],
-// fit: BoxFit.cover,
-// ),
-// ),
