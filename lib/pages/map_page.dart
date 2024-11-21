@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:joub_jum/auth.dart';
 import 'package:joub_jum/consts.dart';
 import 'package:location/location.dart';
 import 'package:joub_jum/pages/search_page.dart';
@@ -36,7 +37,6 @@ class _MapPageState extends State<MapPage> {
   String? _placeName;
   double _buttonBottomPadding = 84;
   bool polylineDirection = false;
-
 
   String? _placeID;
   late double _sliderMaxHeight;
@@ -208,6 +208,16 @@ class _MapPageState extends State<MapPage> {
               navigateToNextScreen(context, const FriendPage());
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text(
+              'Sign Out',
+              style: TextStyle(fontFamily: 'Raritas'),
+            ),
+            onTap: () {
+              _signOut();
+            },
+          ),
         ],
       ),
     );
@@ -374,8 +384,7 @@ class _MapPageState extends State<MapPage> {
               polylineDirection = false;
               polylines = {};
             });
-          }
-          else {
+          } else {
             setState(() {
               polylineDirection = true;
             });
@@ -384,7 +393,7 @@ class _MapPageState extends State<MapPage> {
             getPolylinePoints().then((coordinate) {
               generatePolylineFromPoints(coordinate);
             });
-          }
+            }
           _panelController.close();
         },
         style: ElevatedButton.styleFrom(
@@ -398,5 +407,8 @@ class _MapPageState extends State<MapPage> {
     currentLocationMarker = await BitmapDescriptor.asset(
         const ImageConfiguration(size: Size(20, 20), devicePixelRatio: 2.5),
         'assets/icons/current_marker.png');
+  }
+  Future<void> _signOut() async {
+    await AuthService().signout(context: context);
   }
 }
