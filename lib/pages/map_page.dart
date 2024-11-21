@@ -349,7 +349,7 @@ class _MapPageState extends State<MapPage> {
         Navigator.of(context).pop();
       }
       _cameraToPosition(_selectedP!);
-      if (polylineDirection ) {
+      if (polylineDirection) {
         getPolylinePoints().then((coordinate) {
           generatePolylineFromPoints(coordinate);
         });
@@ -369,12 +369,22 @@ class _MapPageState extends State<MapPage> {
 
   ElevatedButton directionButton() => ElevatedButton(
         onPressed: () {
+          if (polylineDirection) {
+            setState(() {
+              polylineDirection = false;
+              polylines = {};
+            });
+          }
+          else {
             setState(() {
               polylineDirection = true;
             });
-          getPolylinePoints().then((coordinate) {
-            generatePolylineFromPoints(coordinate);
-          });
+          }
+          if (polylineDirection) {
+            getPolylinePoints().then((coordinate) {
+              generatePolylineFromPoints(coordinate);
+            });
+          }
           _panelController.close();
         },
         style: ElevatedButton.styleFrom(
