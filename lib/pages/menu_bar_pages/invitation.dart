@@ -70,8 +70,8 @@ class _InvitationPageState extends State<InvitationPage> {
               const SizedBox(width: 10.0),
               Expanded(
                 child: Text(
-                  '${invitation['creator']} sent an invite',
-                  style: TextStyle(fontSize: 20, fontFamily: 'Raritas', color: bodyColor),
+                  '${invitation['user']} sent an invite',
+                  style: TextStyle(fontSize: 20, fontFamily: mainFont, color: textForeground),
                 ),
               ),
               buildButtons(invitation),
@@ -151,7 +151,7 @@ class _InvitationPageState extends State<InvitationPage> {
   void _onRejectPressed(Map<String, dynamic> invitation) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Reject invite from ${invitation['creator']}'),
+        content: Text('Reject invite from ${invitation['user']}'),
       ),
     );
     setState(() {
@@ -162,7 +162,7 @@ class _InvitationPageState extends State<InvitationPage> {
   void _onAcceptPressed(Map<String, dynamic> invitation) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Accept invite from ${invitation['creator']}'),
+        content: Text('Accept invite from ${invitation['user']}'),
       ),
     );
     setState(() {
@@ -174,7 +174,7 @@ class _InvitationPageState extends State<InvitationPage> {
     return AppBar(
       title: const Text(
         'Invitations',
-        style: TextStyle(fontSize: 25, fontFamily: 'Raritas'),
+        style: TextStyle(fontSize: 25, fontFamily: mainFont),
       ),
       backgroundColor: appBarColor,
       elevation: 0.0,

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:joub_jum/auth.dart';
 import 'package:joub_jum/consts.dart';
 import 'package:location/location.dart';
 import 'package:joub_jum/pages/search_page.dart';
@@ -14,6 +13,9 @@ import 'package:joub_jum/pages/menu_bar_pages/joub_jum.dart';
 import 'package:joub_jum/pages/menu_bar_pages/recommendation.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:joub_jum/widgets/sliding_panel.dart';
+
+import '../auth.dart';
+import '../widgets/confirmation.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -58,14 +60,15 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     setState(() {
-      _sliderMaxHeight = screenHeight / 1.5;
+      _sliderMaxHeight = screenHeight / 2;
     });
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: appBar(),
-      drawer: SizedBox(width: 300, child: buildDrawer()),
+      drawer: SizedBox(width: screenWidth / 1.5, child: buildDrawer()),
       body: _currentP == null
           ? const Center(
               child: Text("Loading..."),
@@ -123,6 +126,7 @@ class _MapPageState extends State<MapPage> {
           panel: floatingPanel(
               _photoUrl!, _placeName!, _placeID!, directionButton()),
           collapsed: floatingCollapsed(),
+          defaultPanelState: PanelState.OPEN,
           onPanelSlide: (double position) {
             setState(() {
               _buttonBottomPadding = 84 + (0.8 * position * _sliderMaxHeight);
@@ -141,19 +145,16 @@ class _MapPageState extends State<MapPage> {
           UserAccountsDrawerHeader(
             accountName: const Text(
               'User1',
-              style: TextStyle(color: Colors.black, fontFamily: "Raritas"),
+              style: TextStyle(color: Colors.black, fontFamily: mainFont),
             ),
             accountEmail: Text(userEmail!,
-                style: const TextStyle(
-                    color: Colors.black, fontFamily: "Raritas")),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.network(
-                  'https://media.istockphoto.com/id/2151669184/vector/vector-flat-illustration-in-grayscale-avatar-user-profile-person-icon-gender-neutral.jpg?s=612x612&w=0&k=20&c=UEa7oHoOL30ynvmJzSCIPrwwopJdfqzBs0q69ezQoM8=',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
+                style:
+                    const TextStyle(color: Colors.black, fontFamily: mainFont)),
+            currentAccountPicture: const CircleAvatar(
+              child: CircleAvatar(
+                maxRadius: 60,
+                backgroundColor: Colors.black,
+                backgroundImage: NetworkImage("https://en.vogue.me/wp-content/uploads/2022/03/Nicki-Minaj-Barbie-diamond-necklace-Ashna-Mehta.jpg"),
               ),
             ),
             decoration: const BoxDecoration(color: drawerTop),
@@ -162,7 +163,7 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.account_circle_rounded),
             title: const Text(
               'Account',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
               navigateToNextScreen(context, const AccountPage());
@@ -172,7 +173,7 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.recommend_rounded),
             title: const Text(
               'Recommendation',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
               navigateWithData(context, const RecommendationPage());
@@ -182,7 +183,7 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.insert_invitation_rounded),
             title: const Text(
               'Invitation',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
               navigateWithData(context, const InvitationPage());
@@ -192,7 +193,7 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.map_rounded),
             title: const Text(
               'JoubJum',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
               navigateWithData(context, const JoubJumPage());
@@ -202,7 +203,7 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.people_alt_rounded),
             title: const Text(
               'Friend',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
               navigateToNextScreen(context, const FriendPage());
@@ -212,10 +213,14 @@ class _MapPageState extends State<MapPage> {
             leading: const Icon(Icons.logout),
             title: const Text(
               'Sign Out',
-              style: TextStyle(fontFamily: 'Raritas'),
+              style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
-              _signOut();
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Confirmation(text: "sign out", function: () async {await AuthService().signOut(context: context);});
+                  });
             },
           ),
         ],
@@ -231,7 +236,7 @@ class _MapPageState extends State<MapPage> {
       title: const Text(
         'Location',
         style:
-            TextStyle(color: Colors.black, fontSize: 25, fontFamily: 'Raritas'),
+            TextStyle(color: Colors.black, fontSize: 25, fontFamily: mainFont),
       ),
       centerTitle: true,
       leading: Builder(builder: (context) {
@@ -393,7 +398,7 @@ class _MapPageState extends State<MapPage> {
             getPolylinePoints().then((coordinate) {
               generatePolylineFromPoints(coordinate);
             });
-            }
+          }
           _panelController.close();
         },
         style: ElevatedButton.styleFrom(
@@ -407,8 +412,5 @@ class _MapPageState extends State<MapPage> {
     currentLocationMarker = await BitmapDescriptor.asset(
         const ImageConfiguration(size: Size(20, 20), devicePixelRatio: 2.5),
         'assets/icons/current_marker.png');
-  }
-  Future<void> _signOut() async {
-    await AuthService().signout(context: context);
   }
 }

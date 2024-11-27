@@ -35,179 +35,148 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            Flexible(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(23),
-                  color: drawerTop,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(13.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: drawerBottom,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        // Adjusts height to fit contents
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                'Created by:',
-                                style: TextStyle(
-                                  color: boxColor,
-                                  fontSize: 20,
-                                  fontFamily: "Raritas",
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(23),
+                color: drawerTop,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(13.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: drawerBottom,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      // Adjusts height to fit contents
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'Created by:',
+                              style: TextStyle(
+                                color: textForeground,
+                                fontSize: 20,
+                                fontFamily: mainFont,
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            CircleAvatar(
+                              radius: 20.0,
+                              backgroundColor: Colors.transparent,
+                              child: ClipOval(
+                                child: Image.network(
+                                  _joubjumDetails['imagePath']!,
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              const SizedBox(width: 10.0),
-                              CircleAvatar(
-                                radius: 20.0,
-                                backgroundColor: Colors.transparent,
-                                child: ClipOval(
-                                  child: Image.network(
-                                    _joubjumDetails['imagePath']!,
-                                    width: 40,
-                                    height: 40,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Text(
+                              _joubjumDetails['user']!,
+                              style: const TextStyle(
+                                color: textForeground,
+                                fontSize: 20,
+                                fontFamily: mainFont,
                               ),
-                              const SizedBox(width: 10.0),
-                              Text(
-                                _joubjumDetails['creator']!,
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Location: ${_joubjumDetails['location']!}',
                                 style: const TextStyle(
-                                  color: boxColor,
+                                  color: textForeground,
                                   fontSize: 20,
-                                  fontFamily: "Raritas",
+                                  fontFamily: mainFont,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ],
-                          ),
-                          const Divider(),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Location: ${_joubjumDetails['location']!}',
-                                  style: const TextStyle(
-                                    color: boxColor,
-                                    fontSize: 20,
-                                    fontFamily: "Raritas",
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5.0,
-                              ),
-                              SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    goToPlace(_joubjumDetails);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    shape: const CircleBorder(),
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  child: const Text(
-                                    '⚲',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
-                          Text(
-                            'Date: ${_joubjumDetails['date']!}',
-                            style: const TextStyle(
-                              color: boxColor,
-                              fontSize: 20,
-                              fontFamily: "Raritas",
                             ),
-                          ),
-                          const Divider(),
-                          Text(
-                            'Time: ${_joubjumDetails['time']!}',
-                            style: const TextStyle(
-                              color: boxColor,
-                              fontSize: 20,
-                              fontFamily: "Raritas",
+                            const SizedBox(
+                              width: 5.0,
                             ),
+                            SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  goToPlace(_joubjumDetails);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  shape: const CircleBorder(),
+                                  backgroundColor: Colors.white,
+                                ),
+                                child: const Text(
+                                  '⚲',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Text(
+                          'Date: ${_joubjumDetails['date']!}',
+                          style: const TextStyle(
+                            color: textForeground,
+                            fontSize: 20,
+                            fontFamily: mainFont,
                           ),
-                          const Divider(),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Invitees:',
-                                style: TextStyle(
-                                  color: boxColor,
-                                  fontSize: 20,
-                                  fontFamily: "Raritas",
-                                ),
-                              ),
-                              const SizedBox(width: 8.0),
-                              // Space between "Going:" label and avatars
-                              Expanded(
-                                child: Wrap(
-                                  spacing: 10.0,
-                                  // Space between each avatar-name pair
-                                  runSpacing: 10.0,
-                                  // Space between lines if wrapping occurs
-                                  children: _joubjumDetails['invitees']
-                                      .map<Widget>((invitee) =>
-                                          _buildAvatarName(invitee['name'],
-                                              invitee['image']))
-                                      .toList(),
-                                ),
-                              ),
-                            ],
+                        ),
+                        const Divider(),
+                        Text(
+                          'Time: ${_joubjumDetails['time']!}',
+                          style: const TextStyle(
+                            color: textForeground,
+                            fontSize: 20,
+                            fontFamily: mainFont,
                           ),
-                          const Divider(),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Going:',
-                                style: TextStyle(
-                                  color: boxColor,
-                                  fontSize: 20,
-                                  fontFamily: "Raritas",
-                                ),
+                        ),
+                        const Divider(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Going:',
+                              style: TextStyle(
+                                color: textForeground,
+                                fontSize: 20,
+                                fontFamily: mainFont,
                               ),
-                              const SizedBox(width: 8.0),
-                              // Space between "Going:" label and avatars
-                              Expanded(
-                                child: Wrap(
-                                  spacing: 10.0,
-                                  // Space between each avatar-name pair
-                                  runSpacing: 10.0,
-                                  // Space between lines if wrapping occurs
-                                  children: _joubjumDetails['going']
-                                      .map<Widget>((invitee) =>
-                                      _buildAvatarName(invitee['name'],
-                                          invitee['image']))
-                                      .toList(),
-                                ),
+                            ),
+                            const SizedBox(width: 8.0),
+                            // Space between "Going:" label and avatars
+                            Expanded(
+                              child: Wrap(
+                                spacing: 10.0,
+                                // Space between each avatar-name pair
+                                runSpacing: 10.0,
+                                // Space between lines if wrapping occurs
+                                children: _joubjumDetails['invitees']
+                                    .map<Widget>((invitee) =>
+                                        _buildAvatarName(invitee['name'],
+                                            invitee['image']))
+                                    .toList(),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -223,24 +192,23 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
 
   Row buildButtons() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () => Navigator.pop(context, 'delete'),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 2.0,
-              backgroundColor: Colors.red,
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, 'delete'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: const Text(
-              'Cancel JoubJum',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontFamily: "Raritas",
-              ),
+            elevation: 2.0,
+            backgroundColor: Colors.red,
+          ),
+          child: const Text(
+            'Cancel JoubJum',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: mainFont,
             ),
           ),
         ),
@@ -268,9 +236,9 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
         Text(
           name,
           style: const TextStyle(
-            color: boxColor,
+            color: textForeground,
             fontSize: 20,
-            fontFamily: "Raritas",
+            fontFamily: mainFont,
           ),
           overflow: TextOverflow.ellipsis,
         ),
@@ -282,7 +250,7 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
     return AppBar(
       title: const Text(
         'JoubJum Detail',
-        style: TextStyle(fontSize: 25, fontFamily: "Raritas"),
+        style: TextStyle(fontSize: 25, fontFamily: mainFont),
       ),
       backgroundColor: appBarColor,
       elevation: 0.0,

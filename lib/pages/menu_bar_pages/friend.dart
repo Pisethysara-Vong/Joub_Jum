@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:joub_jum/widgets/confirmation.dart';
 
 import '../../consts.dart';
 
@@ -105,7 +106,7 @@ class _FriendPageState extends State<FriendPage> {
     return AppBar(
       title: const Text(
         'Friends',
-        style: TextStyle(fontSize: 25, fontFamily: "Raritas"),
+        style: TextStyle(fontSize: 25, fontFamily: mainFont),
       ),
       backgroundColor: appBarColor,
       elevation: 0.0,
@@ -124,13 +125,12 @@ Padding buildHeader(String header) {
     child: Text(
       header,
       style: const TextStyle(
-        fontSize: 25, fontFamily: "Raritas",
+        fontSize: 25, fontFamily: mainFont,
       ),
     ),
   );
 }
 
-// FriendListPage with updated structure to display friends' images and names
 class FriendListPage extends StatefulWidget {
   final List<Map<String, String>> friends;
   final Function(Map<String, String>) unFriend;
@@ -170,7 +170,7 @@ class _FriendListPageState extends State<FriendListPage> {
           borderRadius: BorderRadius.circular(20.0),
           color: boxColor,
         ),
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.only(left: 12.0, right: 8.0),
         child: Row(
           children: [
             CircleAvatar(
@@ -190,9 +190,9 @@ class _FriendListPageState extends State<FriendListPage> {
               child: Text(
                 friend['name']!,
                 style: const TextStyle(
-                  color: bodyColor,
+                  color: textForeground,
                   fontSize: 20,
-                  fontFamily: "Raritas"
+                  fontFamily: mainFont
                 ),
               ),
             ),
@@ -211,8 +211,13 @@ class _FriendListPageState extends State<FriendListPage> {
           width: 35,
           height: 35,
           child: ElevatedButton(
+            //TODO Confirmation
             onPressed: () {
-              widget.unFriend(friend);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Confirmation(text: 'unfriend ${friend['user']}', function: widget.unFriend(friend));
+                  });
               setState(() {});
             },
             style: ElevatedButton.styleFrom(
@@ -301,9 +306,9 @@ class _RequestPageState extends State<RequestPage> {
                   Text(
                     request['name']!,
                     style: const TextStyle(
-                        color: bodyColor,
+                        color: textForeground,
                         fontSize: 23,
-                        fontFamily: "Raritas"
+                        fontFamily: mainFont
                     ),
                   ),
                   const SizedBox(height: 8.0),
@@ -472,7 +477,12 @@ class _AddFriendPageState extends State<AddFriendPage> {
                     backgroundColor: Colors.grey.shade400,
                   ),
                   child: const Text('Request Sent'),
+
                 ) : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appBarColor,
+                    foregroundColor: bodyColor,
+                  ),
                   onPressed: () => _onSendRequest(friend),
                   child: const Text('Send Request'),
                 ),
