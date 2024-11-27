@@ -27,7 +27,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
           Expanded(
             child: joubjums.isEmpty ? Center(
               child: Text(
-                'No new invitations',
+                'No new JoubJums',
                 style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
               ),
             ): ListView.builder(
@@ -78,7 +78,7 @@ class _JoubJumPageState extends State<JoubJumPage> {
                           const SizedBox(width: 8.0,),
                           Expanded(
                             child: Text(
-                              'JoubJum with ${joubjum['user']}',
+                              'JoubJum with ${joubjum['creator']}',
                               style: TextStyle(fontSize: 20, fontFamily: 'Raritas', color: bodyColor),
                             ),
                           ),

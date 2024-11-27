@@ -80,7 +80,7 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
                               ),
                               const SizedBox(width: 10.0),
                               Text(
-                                _joubjumDetails['user']!,
+                                _joubjumDetails['creator']!,
                                 style: const TextStyle(
                                   color: boxColor,
                                   fontSize: 20,
@@ -153,7 +153,7 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Going:',
+                                'Invitees:',
                                 style: TextStyle(
                                   color: boxColor,
                                   fontSize: 20,
@@ -172,6 +172,35 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
                                       .map<Widget>((invitee) =>
                                           _buildAvatarName(invitee['name'],
                                               invitee['image']))
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Going:',
+                                style: TextStyle(
+                                  color: boxColor,
+                                  fontSize: 20,
+                                  fontFamily: "Raritas",
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              // Space between "Going:" label and avatars
+                              Expanded(
+                                child: Wrap(
+                                  spacing: 10.0,
+                                  // Space between each avatar-name pair
+                                  runSpacing: 10.0,
+                                  // Space between lines if wrapping occurs
+                                  children: _joubjumDetails['going']
+                                      .map<Widget>((invitee) =>
+                                      _buildAvatarName(invitee['name'],
+                                          invitee['image']))
                                       .toList(),
                                 ),
                               ),

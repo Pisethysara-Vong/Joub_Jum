@@ -80,7 +80,7 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
                               ),
                               const SizedBox(width: 10.0),
                               Text(
-                                _invitationDetails['user']!,
+                                _invitationDetails['creator']!,
                                 style: const TextStyle(
                                   color: boxColor,
                                   fontSize: 20,
@@ -153,7 +153,7 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Going:',
+                                'Invitees:',
                                 style: TextStyle(
                                   color: boxColor,
                                   fontSize: 20,

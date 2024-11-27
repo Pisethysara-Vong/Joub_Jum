@@ -27,13 +27,12 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
 
   //TODO Friend backends
   final List<Map<String, String>> _allFriends = [
-    {"name": "Channa", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Sokly", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Rathana", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Makara", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Samnang", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Panha", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
-    {"name": "Sokun", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
+    {"name": "Kati", "imagePath": 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'},
+    {"name": "Chamroeun", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
+    {"name": "Pich", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
+    {"name": "Kimhak", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
+    {"name": "Keameng", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
+    {"name": "Youhorng", "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"},
   ];
 
   @override
@@ -44,13 +43,20 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
 
     // Initialize the setUpJoubJum map here
     setUpJoubJum = {
+      "creator": "Ysara",
       "user": "Kati",
       "date": "",
       "time": "",
       "location": location,
       "imagePath": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
       "placeId": placeId,
-      "invitees": <Map<String, String>>[], // Explicit type definition
+      "invitees": <Map<String, String>>[],
+      "going": [
+        {
+          "name": "Ysara",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+        }
+      ],// Explicit type definition
     };
   }
 
@@ -116,7 +122,7 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
                                   decoration: const InputDecoration(
                                     labelText: 'Created by',
                                   ),
-                                  initialValue: setUpJoubJum['user'],
+                                  initialValue: setUpJoubJum['creator'],
                                   readOnly: true,
                                 ),
                                 TextFormField(
