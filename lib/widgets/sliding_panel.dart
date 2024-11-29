@@ -10,7 +10,7 @@ Widget floatingCollapsed() {
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24.0), topRight: Radius.circular(24.0)),
     ),
-    margin: const EdgeInsets.fromLTRB(24.0, 48.0, 24.0, 0.0),
+    margin: const EdgeInsets.fromLTRB(20.0, 48.0, 20.0, 0.0),
     child: const Center(
       child: Icon(
         IconData(0xf0532, fontFamily: 'MaterialIcons'),
@@ -33,7 +33,7 @@ Widget floatingPanel(List photoUrl, String placeName, String placeID, ElevatedBu
         ),
       ],
     ),
-    margin: const EdgeInsets.fromLTRB(24.0, 48.0, 24.0, 24.0),
+    margin: const EdgeInsets.fromLTRB(20.0, 48.0, 20.0, 24.0),
     child: Column(
       children: [
         const SizedBox(height: 8),

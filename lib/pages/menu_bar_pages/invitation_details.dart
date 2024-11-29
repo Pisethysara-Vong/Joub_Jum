@@ -79,7 +79,7 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
                             ),
                             const SizedBox(width: 10.0),
                             Text(
-                              _invitationDetails['user']!,
+                              _invitationDetails['creator']!,
                               style: const TextStyle(
                                 color: textForeground,
                                 fontSize: 20,
@@ -152,7 +152,7 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Going:',
+                              'Invitees:',
                               style: TextStyle(
                                 color: textForeground,
                                 fontSize: 20,
@@ -195,26 +195,6 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () => Navigator.pop(context, 'accept'),
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 2.0,
-              backgroundColor: Colors.green,
-            ),
-            child: const Text(
-              'Accept',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 8.0),
-        Expanded(
-          child: ElevatedButton(
             onPressed: () => Navigator.pop(context, 'reject'),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -225,6 +205,26 @@ class _InvitationDetailsPageState extends State<InvitationDetailsPage> {
             ),
             child: const Text(
               'Reject',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8.0),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(context, 'accept'),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 2.0,
+              backgroundColor: Colors.green,
+            ),
+            child: const Text(
+              'Accept',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

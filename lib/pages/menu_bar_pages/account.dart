@@ -27,9 +27,9 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           Align(
-            alignment: Alignment.bottomRight,
+            alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(bottom: 25.0),
               child: ElevatedButton(
                 onPressed: () {
                   showDialog(
@@ -40,18 +40,23 @@ class _AccountPageState extends State<AccountPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: appBarColor,
+                  backgroundColor: Colors.red,
                   foregroundColor: bodyColor,
                 ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(IconData(0xe3b3, fontFamily: 'MaterialIcons')),
-                    Text(
-                      'Sign Out',
-                      style: TextStyle(fontFamily: mainFont),
-                    ),
-                  ],
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(IconData(0xe3b3, fontFamily: 'MaterialIcons')),
+                      Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          fontFamily: mainFont,
+                          fontSize: 23),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -91,8 +96,7 @@ class _AccountPageState extends State<AccountPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(
-          width: 48,
-          child: Icon(Icons.verified_user),
+          width: 43,
         ),
         const Text(
           "Nicki Minaj",

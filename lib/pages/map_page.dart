@@ -37,7 +37,7 @@ class _MapPageState extends State<MapPage> {
   List? _photoUrl;
   String? userEmail;
   String? _placeName;
-  double _buttonBottomPadding = 84;
+  double _buttonBottomPadding = 20;
   bool polylineDirection = false;
 
   String? _placeID;
@@ -107,7 +107,7 @@ class _MapPageState extends State<MapPage> {
       Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-          padding: EdgeInsets.only(bottom: _buttonBottomPadding, right: 25),
+          padding: EdgeInsets.only(bottom: _buttonBottomPadding, right: 20),
           child: FloatingActionButton(
             backgroundColor: boxColor,
             foregroundColor: appBarColor,
@@ -129,7 +129,7 @@ class _MapPageState extends State<MapPage> {
           defaultPanelState: PanelState.OPEN,
           onPanelSlide: (double position) {
             setState(() {
-              _buttonBottomPadding = 84 + (0.8 * position * _sliderMaxHeight);
+              _buttonBottomPadding = 65 + (0.77 * position * _sliderMaxHeight);
             });
           },
         ),
@@ -364,6 +364,7 @@ class _MapPageState extends State<MapPage> {
         Navigator.of(context).pop();
       }
       _cameraToPosition(_selectedP!);
+      _panelController.open();
       if (polylineDirection) {
         getPolylinePoints().then((coordinate) {
           generatePolylineFromPoints(coordinate);
