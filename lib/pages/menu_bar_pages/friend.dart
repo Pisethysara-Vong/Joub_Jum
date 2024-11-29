@@ -21,7 +21,6 @@ class _FriendPageState extends State<FriendPage> {
     });
   }
 
-
   late final List<Widget> _pages;
 
   @override
@@ -33,7 +32,6 @@ class _FriendPageState extends State<FriendPage> {
       const AddFriendPage(),
     ];
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,6 @@ Padding buildHeader(String header) {
 }
 
 class FriendListPage extends StatefulWidget {
-
   const FriendListPage({super.key});
 
   @override
@@ -95,15 +92,15 @@ class FriendListPage extends StatefulWidget {
 }
 
 class _FriendListPageState extends State<FriendListPage> {
-
-  void unFriend(Map<String, String> friend){
+  void unFriend(Map<String, String> friend) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Unfriended ${friend['name']}'),
       ),
     );
     setState(() {
-      Provider.of<InvitationsAndJoubJumsState>(context, listen: false).unFriend(friend);
+      Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+          .unFriend(friend);
     });
   }
 
@@ -202,7 +199,7 @@ class _FriendListPageState extends State<FriendListPage> {
 
   ElevatedButton buildConfirmationButton(Map<String, String> friend) {
     return ElevatedButton(
-      onPressed: ()  {
+      onPressed: () {
         unFriend(friend);
         Navigator.pop(context);
       },
@@ -226,34 +223,36 @@ class _FriendListPageState extends State<FriendListPage> {
 
 // Updated RequestPage to display requests' images and names
 class RequestPage extends StatefulWidget {
-
-  const RequestPage({super.key,});
+  const RequestPage({
+    super.key,
+  });
 
   @override
   _RequestPageState createState() => _RequestPageState();
 }
 
 class _RequestPageState extends State<RequestPage> {
-
-  void acceptRequest(Map<String, String> request){
+  void acceptRequest(Map<String, String> request) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Accepted request from ${request['name']}'),
       ),
     );
     setState(() {
-      Provider.of<InvitationsAndJoubJumsState>(context, listen: false).acceptRequest(request);
+      Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+          .acceptRequest(request);
     });
   }
 
-  void rejectRequest(Map<String, String> request){
+  void rejectRequest(Map<String, String> request) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Rejected request from ${request['name']}'),
       ),
     );
     setState(() {
-      Provider.of<InvitationsAndJoubJumsState>(context, listen: false).rejectRequest(request);
+      Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+          .rejectRequest(request);
     });
   }
 
@@ -361,7 +360,7 @@ class _RequestPageState extends State<RequestPage> {
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-             rejectRequest(request);
+              rejectRequest(request);
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -385,8 +384,9 @@ class _RequestPageState extends State<RequestPage> {
 }
 
 class AddFriendPage extends StatefulWidget {
-
-  const AddFriendPage({super.key,});
+  const AddFriendPage({
+    super.key,
+  });
 
   @override
   State<AddFriendPage> createState() => _AddFriendPageState();
@@ -408,29 +408,35 @@ class _AddFriendPageState extends State<AddFriendPage> {
     setState(() {
       _isTyping = _searchController.text.isNotEmpty;
       if (_isTyping) {
-        _searchResults = Provider.of<InvitationsAndJoubJumsState>(context, listen: false).notFriends
-            .where((friend) => friend['name']!
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()))
-            .toList();
+        _searchResults =
+            Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+                .notFriends
+                .where((friend) => friend['name']!
+                    .toLowerCase()
+                    .contains(_searchController.text.toLowerCase()))
+                .toList();
       } else {
         _searchResults = [];
       }
     });
   }
+
   void _onSendRequest(Map<String, String> friend) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Request sent to ${friend['name']}')),
     );
 
     setState(() {
-      Provider.of<InvitationsAndJoubJumsState>(context, listen: false).sendRequest(friend);
+      Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+          .sendRequest(friend);
       _searchController.clear(); // Clear the search bar
     });
   }
 
   bool _isRequestSent(String name) {
-    return Provider.of<InvitationsAndJoubJumsState>(context, listen: false).requests.any((request) => request['name'] == name);
+    return Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+        .requests
+        .any((request) => request['name'] == name);
   }
 
   @override
@@ -475,35 +481,35 @@ class _AddFriendPageState extends State<AddFriendPage> {
                         style: TextStyle(color: Colors.grey.shade600),
                       ),
                     )
-        : ListView.builder(
-            itemCount: _searchResults.length,
-            itemBuilder: (context, index) {
-              final friend = _searchResults[index];
-              final isRequestSent = _isRequestSent(friend['name']!);
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(friend['imagePath']!),
-                ),
-                title: Text(friend['name']!),
-                trailing: isRequestSent
-                    ? ElevatedButton(
-                        onPressed: null, // Disable the button
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey.shade400,
-                        ),
-                        child: const Text('Request Sent'),
-                      )
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: appBarColor,
-                          foregroundColor: bodyColor,
-                        ),
-                        onPressed: () => _onSendRequest(friend),
-                        child: const Text('Send Request'),
-                      ),
-              );
-            },
-          ),
+                  : ListView.builder(
+                      itemCount: _searchResults.length,
+                      itemBuilder: (context, index) {
+                        final friend = _searchResults[index];
+                        final isRequestSent = _isRequestSent(friend['name']!);
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(friend['imagePath']!),
+                          ),
+                          title: Text(friend['name']!),
+                          trailing: isRequestSent
+                              ? ElevatedButton(
+                                  onPressed: null, // Disable the button
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.grey.shade400,
+                                  ),
+                                  child: const Text('Request Sent'),
+                                )
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: appBarColor,
+                                    foregroundColor: bodyColor,
+                                  ),
+                                  onPressed: () => _onSendRequest(friend),
+                                  child: const Text('Send Request'),
+                                ),
+                        );
+                      },
+                    ),
         ),
       ],
     );

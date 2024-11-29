@@ -39,6 +39,7 @@ class _MapPageState extends State<MapPage> {
   String? _placeName;
   double _buttonBottomPadding = 20;
   bool polylineDirection = false;
+  late double _rating;
 
   String? _placeID;
   late double _sliderMaxHeight;
@@ -124,7 +125,7 @@ class _MapPageState extends State<MapPage> {
           maxHeight: _sliderMaxHeight,
           renderPanelSheet: false,
           panel: floatingPanel(
-              _photoUrl!, _placeName!, _placeID!, directionButton()),
+              _photoUrl!, _placeName!, _placeID!, directionButton(), _rating),
           collapsed: floatingCollapsed(),
           defaultPanelState: PanelState.OPEN,
           onPanelSlide: (double position) {
@@ -359,6 +360,7 @@ class _MapPageState extends State<MapPage> {
         _photoUrl = result[1];
         _placeName = result[2];
         _placeID = result[3];
+        _rating = result[4];
       });
       if (_scaffoldKey.currentState!.isDrawerOpen) {
         Navigator.of(context).pop();

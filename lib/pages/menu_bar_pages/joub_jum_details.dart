@@ -170,49 +170,49 @@ class _JoubJumDetailsPageState extends State<JoubJumDetailsPage> {
                             // Space between "Going:" label and avatars
                             Expanded(
                               child: Wrap(
-                                spacing: 10.0,
-                                // Space between each avatar-name pair
-                                runSpacing: 10.0,
-                                // Space between lines if wrapping occurs
-                                children: [
-                                  ..._joubjumDetails['invitees']
-                                      .map<Widget>((invitee) => _buildAvatarName(invitee['name'], invitee['image']))
-                                      .toList(),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            final selectedFriend = await Navigator.push(context,
-                                              MaterialPageRoute(
-                                                builder: (_) => FriendSelectionPage(currentInvitees: _joubjumDetails['invitees'],),
-                                              ),
-                                            );
-                                            if (selectedFriend != null) {
-                                              Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
-                                                  .addMoreInvitees(_joubjumDetails, selectedFriend);
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: const CircleBorder(),
-                                            backgroundColor: const Color(0xFFC49551),
-                                            padding: EdgeInsets.zero,
-                                          ),
-                                          child: const Icon(
-                                            Icons.add,
-                                            size: 15,
-                                            color: Colors.white,
+                                  spacing: 10.0,
+                                  // Space between each avatar-name pair
+                                  runSpacing: 10.0,
+                                  // Space between lines if wrapping occurs
+                                  children: [
+                                    ..._joubjumDetails['invitees']
+                                        .map<Widget>((invitee) => _buildAvatarName(invitee['name'], invitee['image']))
+                                        .toList(),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              final selectedFriend = await Navigator.push(context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => FriendSelectionPage(currentInvitees: _joubjumDetails['invitees'],),
+                                                ),
+                                              );
+                                              if (selectedFriend != null) {
+                                                Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
+                                                    .addMoreInvitees(_joubjumDetails, selectedFriend);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              shape: const CircleBorder(),
+                                              backgroundColor: const Color(0xFFC49551),
+                                              padding: EdgeInsets.zero,
+                                            ),
+                                            child: const Icon(
+                                              Icons.add,
+                                              size: 15,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ]
+                                      ],
+                                    ),
+                                  ]
                               ),
                             ),
                           ],

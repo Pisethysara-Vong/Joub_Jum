@@ -49,7 +49,7 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
     if (picked != null) {
       final now = DateTime.now();
       final selectedTime =
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
       final formattedTime = DateFormat('h:mm a').format(selectedTime);
       setState(() {
         _controller.text = formattedTime;
@@ -74,7 +74,7 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
       "time": "",
       "location": location,
       "imagePath":
-          "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+      "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
       "placeId": placeId,
       "invitees": <Map<String, String>>[],
       "going": [
@@ -172,11 +172,11 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
                                     ),
                                   ),
                                   validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Parameter Required'
-                                          : null,
+                                  value == null || value.isEmpty
+                                      ? 'Parameter Required'
+                                      : null,
                                   onSaved: (value) =>
-                                      setUpJoubJum['date'] = value ?? '',
+                                  setUpJoubJum['date'] = value ?? '',
                                   readOnly: true,
                                 ),
                                 TextFormField(
@@ -192,11 +192,11 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
                                     ),
                                   ),
                                   validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Parameter Required'
-                                          : null,
+                                  value == null || value.isEmpty
+                                      ? 'Parameter Required'
+                                      : null,
                                   onSaved: (value) =>
-                                      setUpJoubJum['time'] = value ?? '',
+                                  setUpJoubJum['time'] = value ?? '',
                                   readOnly: true,
                                 ),
                                 const SizedBox(height: 8),
@@ -331,5 +331,4 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
     );
   }
 }
-
 
