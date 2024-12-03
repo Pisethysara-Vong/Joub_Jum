@@ -57,17 +57,17 @@ class _LoginPageState extends State<LoginPage> {
             PasswordContainer(controller: _passwordController),
             const SizedBox(height: 20.0),
             LoginButton(onPressed: _loginButton),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 10.0),
             const ForgotPasswordText(),
             const Divider(),
             const SizedBox(height: 10.0),
             const dontHaveAccount(),
-            const SizedBox(height: 15.0),
             const Text(
               'Or Sign-in with',
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 15.0,
+                fontSize: 23.0,
+                fontFamily: mainFont
               ),
             ),
             const SizedBox(height: 25),
@@ -93,7 +93,8 @@ class LoginText extends StatelessWidget {
       style: TextStyle(
         color: Colors.black,
         fontSize: 30,
-        fontFamily: "Raritas",
+        fontWeight: FontWeight.w600,
+        fontFamily: mainFont
       ),
     );
   }
@@ -134,7 +135,7 @@ class ForgotPasswordText extends StatelessWidget {
       },
       child: const Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(color: Colors.blue, fontFamily: mainFont, fontSize: 18),
       ),
     );
   }
@@ -150,7 +151,7 @@ class dontHaveAccount extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Don't have an account? "),
+          const Text("Don't have an account? ", style: TextStyle(fontFamily: mainFont, fontSize: 18),),
           GestureDetector(
             onTap: () {
               navigateToNextScreen(context, const Username());
@@ -160,6 +161,8 @@ class dontHaveAccount extends StatelessWidget {
               style: TextStyle(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
+                fontFamily: mainFont,
+                fontSize: 18
               ),
             ),
           ),

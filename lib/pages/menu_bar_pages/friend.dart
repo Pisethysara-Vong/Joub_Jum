@@ -265,20 +265,19 @@ class _RequestPageState extends State<RequestPage> {
       children: [
         buildHeader('Requests List'),
         Expanded(
-          child: requests.isEmpty
-              ? Center(
-                  child: Text(
-                    'No new requests',
-                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                  ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  itemCount: requests.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildRequestTile(requests[index]);
-                  },
-                ),
+          child: requests.isEmpty ?
+          Center(
+            child: Text(
+              'No new requests',
+              style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+            ),
+          ) : ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            itemCount: requests.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildRequestTile(requests[index]);
+            },
+          ),
         ),
       ],
     );
@@ -409,11 +408,10 @@ class _AddFriendPageState extends State<AddFriendPage> {
       _isTyping = _searchController.text.isNotEmpty;
       if (_isTyping) {
         _searchResults =
-            Provider.of<InvitationsAndJoubJumsState>(context, listen: false)
-                .notFriends
+            Provider.of<InvitationsAndJoubJumsState>(context, listen: false).notFriends
                 .where((friend) => friend['name']!
-                    .toLowerCase()
-                    .contains(_searchController.text.toLowerCase()))
+                .toLowerCase()
+                .contains(_searchController.text.toLowerCase()))
                 .toList();
       } else {
         _searchResults = [];
@@ -467,49 +465,46 @@ class _AddFriendPageState extends State<AddFriendPage> {
           ),
         ),
         Expanded(
-          child: !_isTyping
-              ? Center(
-                  child: Text(
-                    'Start typing to search friends',
-                    style: TextStyle(color: Colors.grey.shade600),
+          child: !_isTyping ?
+          Center(
+            child: Text(
+              'Start typing to search friends',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ) : _searchResults.isEmpty ?
+          Center(
+            child: Text(
+              'No results found',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ) : ListView.builder(
+            itemCount: _searchResults.length,
+            itemBuilder: (context, index) {
+              final friend = _searchResults[index];
+              final isRequestSent = _isRequestSent(friend['name']!);
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(friend['imagePath']!),
+                ),
+                title: Text(friend['name']!),
+                trailing: isRequestSent ?
+                ElevatedButton(
+                  onPressed: null, // Disable the button
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey.shade400,
                   ),
-                )
-              : _searchResults.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No results found',
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: _searchResults.length,
-                      itemBuilder: (context, index) {
-                        final friend = _searchResults[index];
-                        final isRequestSent = _isRequestSent(friend['name']!);
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(friend['imagePath']!),
-                          ),
-                          title: Text(friend['name']!),
-                          trailing: isRequestSent
-                              ? ElevatedButton(
-                                  onPressed: null, // Disable the button
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey.shade400,
-                                  ),
-                                  child: const Text('Request Sent'),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: appBarColor,
-                                    foregroundColor: bodyColor,
-                                  ),
-                                  onPressed: () => _onSendRequest(friend),
-                                  child: const Text('Send Request'),
-                                ),
-                        );
-                      },
-                    ),
+                  child: const Text('Request Sent'),
+                ) : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appBarColor,
+                    foregroundColor: bodyColor,
+                  ),
+                  onPressed: () => _onSendRequest(friend),
+                  child: const Text('Send Request'),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

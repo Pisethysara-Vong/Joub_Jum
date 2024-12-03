@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../consts.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
@@ -26,7 +28,8 @@ class RegisterText extends StatelessWidget {
       style: TextStyle(
         color: Colors.black,
         fontSize: 30,
-        fontFamily: "Raritas"
+        fontWeight: FontWeight.w600,
+        fontFamily: mainFont
       ),
     );
   }
