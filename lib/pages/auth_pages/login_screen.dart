@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:joub_jum/auth.dart';
-import 'package:joub_jum/pages/auth_pages/register_screen.dart';
 import 'package:joub_jum/pages/auth_pages/username.dart';
 import 'package:joub_jum/widgets/auth_widgets.dart';
 
@@ -65,9 +64,9 @@ class _LoginPageState extends State<LoginPage> {
             const Text(
               'Or Sign-in with',
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 23.0,
-                fontFamily: mainFont
+                  color: Colors.black,
+                  fontSize: 23.0,
+                  fontFamily: mainFont
               ),
             ),
             const SizedBox(height: 25),
@@ -91,10 +90,10 @@ class LoginText extends StatelessWidget {
     return const Text(
       'Login',
       style: TextStyle(
-        color: Colors.black,
-        fontSize: 30,
-        fontWeight: FontWeight.w600,
-        fontFamily: mainFont
+          color: Colors.black,
+          fontSize: 30,
+          fontWeight: FontWeight.w600,
+          fontFamily: mainFont
       ),
     );
   }
@@ -110,8 +109,8 @@ class LoginButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: appBarColor,
-        foregroundColor: bodyColor
+          backgroundColor: appBarColor,
+          foregroundColor: bodyColor
       ),
       child: const Text(
         'Login',
@@ -159,10 +158,10 @@ class dontHaveAccount extends StatelessWidget {
             child: const Text(
               "Register",
               style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontFamily: mainFont,
-                fontSize: 18
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: mainFont,
+                  fontSize: 18
               ),
             ),
           ),

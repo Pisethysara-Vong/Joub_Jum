@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:joub_jum/auth.dart';
 import 'package:joub_jum/consts.dart';
@@ -7,7 +9,9 @@ import 'login_screen.dart';
 class RegisterPage extends StatefulWidget {
   final String username;
   final String phonenum;
-  const RegisterPage({super.key, required this.username, required this.phonenum});
+
+  const RegisterPage(
+      {super.key, required this.username, required this.phonenum});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -23,7 +27,11 @@ class _RegisterPageState extends State<RegisterPage> {
       password: _passwordController.text,
       context: context,
     );
-    AuthService().addUsernameAndPhoneNum(username: widget.username, phonenum:  widget.phonenum, context: context);
+    addUsernameAndPhoneNum(
+        email: _emailController.text,
+        username: widget.username,
+        phonenum: widget.phonenum,
+        context: context);
   }
 
   void _registerWithGoogle() {
@@ -32,6 +40,33 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _registerWithFacebook() {
     // Add Facebook registration functionality
+  }
+
+  Future<void> addUsernameAndPhoneNum({
+    required String username,
+    required String phonenum,
+    required String email,
+    required BuildContext context,
+  }) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+          'uid': user.uid,
+          'username': username,
+          'phonenum': phonenum,
+          'email': email,
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No authenticated user found.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to add user details: $e')),
+      );
+    }
   }
 
   @override
@@ -64,9 +99,9 @@ class _RegisterPageState extends State<RegisterPage> {
             const Text(
               'Or Register with',
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 23.0,
-                fontFamily: mainFont
+                  color: Colors.black,
+                  fontSize: 23.0,
+                  fontFamily: mainFont
               ),
             ),
             const SizedBox(height: 25),
@@ -124,10 +159,10 @@ class AlreadyHaveAccount extends StatelessWidget {
             child: const Text(
               "Log in",
               style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontFamily: mainFont,
-                fontSize: 18
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: mainFont,
+                  fontSize: 18
               ),
             ),
           ),

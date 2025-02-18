@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../consts.dart';
+import '../pages/auth_pages/login_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -28,8 +29,7 @@ class RegisterText extends StatelessWidget {
       style: TextStyle(
         color: Colors.black,
         fontSize: 30,
-        fontWeight: FontWeight.w600,
-        fontFamily: mainFont
+        fontFamily: "Raritas"
       ),
     );
   }
@@ -162,4 +162,29 @@ class AltAuthRow extends StatelessWidget {
       ],
     );
   }
+}
+Padding buildAlreadyHaveAnAccount(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 20.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Already have an account? ", style: TextStyle(fontFamily: mainFont, fontSize: 18),),
+        GestureDetector(
+          onTap: () {
+            navigateToNextScreen(context, const LoginPage());
+          },
+          child: const Text(
+            "Login",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+              fontFamily: mainFont,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

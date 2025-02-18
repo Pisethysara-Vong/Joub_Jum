@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,11 +10,12 @@ import 'package:joub_jum/pages/menu_bar_pages/friend.dart';
 import 'package:joub_jum/pages/menu_bar_pages/invitation.dart';
 import 'package:joub_jum/pages/menu_bar_pages/joub_jum.dart';
 import 'package:joub_jum/pages/menu_bar_pages/recommendation.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:joub_jum/widgets/sliding_panel.dart';
-
 import '../auth.dart';
 import '../widgets/confirmation.dart';
+import 'menu_bar_pages/Provider.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -28,20 +28,18 @@ class _MapPageState extends State<MapPage> {
   final Location _locationController = Location();
   final PanelController _panelController = PanelController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
   LatLng? _selectedP;
   LatLng? _currentP;
   List? _photoUrl;
-  String? userEmail;
   String? _placeName;
+  String? _placeID;
   double _buttonBottomPadding = 20;
   bool polylineDirection = false;
-  late double _rating;
 
-  String? _placeID;
+  late double _rating;
   late double _sliderMaxHeight;
 
   Map<PolylineId, Polyline> polylines = {};
@@ -49,14 +47,18 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void initState() {
-    //TODO setState for Polyline ONLY after they selected a location
     super.initState();
     setCustomMapPin();
-    getCurrentUserEmail();
     getLocationUpdate().then((_) {
       _cameraToPosition(_currentP!);
     });
   }
+  @override
+  void dispose() {
+    _locationController.onLocationChanged.drain();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -138,24 +140,27 @@ class _MapPageState extends State<MapPage> {
   }
 
   Drawer buildDrawer() {
+    final userDataProvider = Provider.of<UserDataProvider>(context);
     return Drawer(
       backgroundColor: drawerBottom,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text(
-              'User1',
-              style: TextStyle(color: Colors.black, fontFamily: mainFont),
+            //TODO Make this look pretty
+            accountName: Text(
+              userDataProvider.username,
+              style: const TextStyle(color: Colors.black, fontFamily: mainFont,fontSize: 20),
             ),
-            accountEmail: Text(userEmail!,
+            accountEmail: Text(userDataProvider.email,
                 style:
                     const TextStyle(color: Colors.black, fontFamily: mainFont)),
             currentAccountPicture: const CircleAvatar(
               child: CircleAvatar(
                 maxRadius: 60,
                 backgroundColor: Colors.black,
-                backgroundImage: NetworkImage("https://en.vogue.me/wp-content/uploads/2022/03/Nicki-Minaj-Barbie-diamond-necklace-Ashna-Mehta.jpg"),
+                backgroundImage: NetworkImage(
+                    "https://en.vogue.me/wp-content/uploads/2022/03/Nicki-Minaj-Barbie-diamond-necklace-Ashna-Mehta.jpg"),
               ),
             ),
             decoration: const BoxDecoration(color: drawerTop),
@@ -167,7 +172,13 @@ class _MapPageState extends State<MapPage> {
               style: TextStyle(fontFamily: mainFont),
             ),
             onTap: () {
-              navigateToNextScreen(context, const AccountPage());
+              navigateToNextScreen(
+                  context,
+                  AccountPage(
+                    username: userDataProvider.username,
+                    email: userDataProvider.email,
+                    phonenum: userDataProvider.phonenum,
+                  ));
             },
           ),
           ListTile(
@@ -220,7 +231,8 @@ class _MapPageState extends State<MapPage> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return Confirmation(text: "sign out", button: buildConfirmationButton());
+                    return Confirmation(
+                        text: "sign out", button: buildConfirmationButton());
                   });
             },
           ),
@@ -261,29 +273,29 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> _cameraToPosition(LatLng pos) async {
     final GoogleMapController controller = await _mapController.future;
-    CameraPosition _newCameraPosition = CameraPosition(target: pos, zoom: 13);
+    CameraPosition newCameraPosition = CameraPosition(target: pos, zoom: 13);
     await controller
-        .animateCamera(CameraUpdate.newCameraPosition(_newCameraPosition));
+        .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
   Future<void> getLocationUpdate() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
     // Check if location services are enabled on user's device, otherwise request the user to enable them
-    _serviceEnabled = await _locationController.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await _locationController.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await _locationController.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _locationController.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
     // Check if the app has location permission, If location permission is denied, request the user to grant permission
-    _permissionGranted = await _locationController.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await _locationController.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await _locationController.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await _locationController.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
@@ -303,7 +315,6 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  //TODO: Change point to _currentP and Selected Location
   Future<List<LatLng>> getPolylinePoints() async {
     List<LatLng> polylineCoordinate = [];
     PolylinePoints polylinePoints = PolylinePoints();
@@ -315,11 +326,9 @@ class _MapPageState extends State<MapPage> {
                 PointLatLng(_selectedP!.latitude, _selectedP!.longitude),
             mode: TravelMode.driving));
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
+      for (var point in result.points) {
         polylineCoordinate.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print(result.errorMessage);
+      }
     }
     return polylineCoordinate;
   }
@@ -375,15 +384,6 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
-  //TODO add username as well
-  Future<void> getCurrentUserEmail() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      setState(() {
-        userEmail = user.email;
-      });
-    }
-  }
 
   ElevatedButton directionButton() => ElevatedButton(
         onPressed: () {

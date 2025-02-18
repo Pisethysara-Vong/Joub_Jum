@@ -15,8 +15,15 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => InvitationsAndJoubJumsState(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => InvitationsAndJoubJumsState(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserDataProvider(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -54,12 +61,9 @@ class AuthenticationWrapper extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        // If user is signed in, show the MapPage or main content
         if (snapshot.hasData) {
           return const MapPage();
-        }
-        // If user is not signed in, show the RegisterPage
-        else {
+        } else {
           return const Username();
         }
       },

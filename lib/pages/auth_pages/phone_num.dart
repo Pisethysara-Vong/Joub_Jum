@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:joub_jum/consts.dart';
 import 'package:joub_jum/pages/auth_pages/login_screen.dart';
 import 'package:joub_jum/pages/auth_pages/register_screen.dart';
-import 'package:joub_jum/pages/auth_pages/username.dart';
-import 'package:joub_jum/widgets/auth_widgets.dart';
+
+import '../../widgets/auth_widgets.dart';
 
 class PhoneNum extends StatefulWidget {
   final String username;
@@ -70,7 +70,8 @@ class _PhoneNumState extends State<PhoneNum> {
         borderColor = Colors.red;
       } else {
         warningMessage = null;
-        navigateToNextScreen(context, RegisterPage(username: widget.username, phonenum: phonenumController.text));
+        String fullPhoneNumber = "$selectedValue ${phonenumController.text}";
+        navigateToNextScreen(context, RegisterPage(username: widget.username, phonenum: fullPhoneNumber));
       }
     });
   }
@@ -148,29 +149,7 @@ class _PhoneNumState extends State<PhoneNum> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account? ", style: TextStyle(fontFamily: mainFont, fontSize: 18),),
-                  GestureDetector(
-                    onTap: () {
-                      navigateToNextScreen(context, const LoginPage());
-                    },
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: mainFont,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            buildAlreadyHaveAnAccount(context),
           ],
         ),
       ),

@@ -1,11 +1,21 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:joub_jum/consts.dart';
+import 'package:joub_jum/utils/image_utils.dart';
 import '../../auth.dart';
 import '../../widgets/confirmation.dart';
 
 class AccountPage extends StatefulWidget {
+  final String username;
+  final String phonenum;
+  final String? email;
+
   const AccountPage({
     super.key,
+    required this.username,
+    required this.phonenum,
+    required this.email,
   });
 
   @override
@@ -13,6 +23,15 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  Uint8List? _image;
+
+  void selectImage() async {
+    Uint8List img = await pickimage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +54,10 @@ class _AccountPageState extends State<AccountPage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return Confirmation(text: "sign out", button: buildConfirmationButton(),);
+                      return Confirmation(
+                        text: "sign out",
+                        button: buildConfirmationButton(),
+                      );
                     },
                   );
                 },
@@ -70,21 +92,41 @@ class _AccountPageState extends State<AccountPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const CircleAvatar(
-          maxRadius: 60,
-          backgroundColor: Colors.black,
-            backgroundImage: NetworkImage("https://en.vogue.me/wp-content/uploads/2022/03/Nicki-Minaj-Barbie-diamond-necklace-Ashna-Mehta.jpg"),
+        Stack(
+          children: [
+            _image != null
+                ? CircleAvatar(
+                    maxRadius: 60,
+                    backgroundColor: Colors.black,
+                    backgroundImage: MemoryImage(_image!),
+                  )
+                : const CircleAvatar(
+                    maxRadius: 60,
+                    backgroundColor: Colors.black,
+                    backgroundImage: NetworkImage(
+                        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"),
+                  ),
+            Positioned(
+              bottom: -10,
+              left: 80,
+              child: IconButton(
+                  onPressed: selectImage,
+                  icon: const Icon(
+                    Icons.add_a_photo,
+                    color: Colors.black,
+                  )),
+            ),
+          ],
         ),
-        //TODO USERNAME FROM DATABASE
         const SizedBox(
           height: 16,
         ),
         buildSignOutButton(),
         const Divider(),
         const SizedBox(height: 16),
-        _buildComponentBox('johndoe@example.com', 0xe22a),
+        _buildComponentBox(widget.email!, 0xe22a),
         const SizedBox(height: 8),
-        _buildComponentBox('123-456-7890', 0xe4a2),
+        _buildComponentBox(widget.phonenum, 0xe4a2),
         const SizedBox(height: 16),
         _buildComponentBox("Password", 0xf00f0),
       ],
@@ -98,9 +140,9 @@ class _AccountPageState extends State<AccountPage> {
         const SizedBox(
           width: 43,
         ),
-        const Text(
-          "Nicki Minaj",
-          style: TextStyle(fontSize: 25, fontFamily: mainFont),
+        Text(
+          widget.username,
+          style: const TextStyle(fontSize: 25, fontFamily: mainFont),
         ),
         IconButton(
           icon: const Icon(Icons.edit),
@@ -142,8 +184,7 @@ class _AccountPageState extends State<AccountPage> {
             if (icon != 0xe22a)
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {
-                },
+                onPressed: () {},
               ),
           ],
         ),
@@ -166,6 +207,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
   ElevatedButton buildConfirmationButton() {
     return ElevatedButton(
       onPressed: () async {
@@ -186,4 +228,5 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
     );
-}}
+  }
+}

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:joub_jum/consts.dart';
@@ -27,8 +26,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 150.0),
             const Text(
               "Enter your Email and we will send you a password reset link",
+              style: TextStyle(fontSize: 25, fontFamily: "Raritas", ),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 25, fontFamily: "Raritas"),
             ),
             EmailContainer(controller: _emailController),
             const SizedBox(height: 50),

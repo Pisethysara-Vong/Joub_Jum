@@ -109,6 +109,7 @@ class _UsernameState extends State<Username> {
               color: bodyColor,
             ),
           ),
+          buildAlreadyHaveAnAccount(context)
         ],
       ),
     );
