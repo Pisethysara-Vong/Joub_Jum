@@ -9,11 +9,13 @@ import 'Provider.dart';
 class CreateJoubJumPage extends StatefulWidget {
   final String location;
   final String placeId;
+  final String username;
 
   const CreateJoubJumPage({
     super.key,
     required this.location,
     required this.placeId,
+    required this.username
   });
 
   @override
@@ -23,6 +25,7 @@ class CreateJoubJumPage extends StatefulWidget {
 class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
   late String location;
   late String placeId;
+  late String username;
   final GlobalKey<FormState> _formStateKey = GlobalKey<FormState>();
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
@@ -64,11 +67,12 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
     super.initState();
     location = widget.location;
     placeId = widget.placeId;
+    username = widget.username;
 
     // Initialize the setUpJoubJum map here
     //TODO BACKEND FOR JOUBJUM
     setUpJoubJum = {
-      "creator": "Ysara",
+      "creator": username,
       "user": "Kati",
       "date": "",
       "time": "",
@@ -79,7 +83,7 @@ class _CreateJoubJumPageState extends State<CreateJoubJumPage> {
       "invitees": <Map<String, String>>[],
       "going": [
         {
-          "name": "Ysara",
+          "name": username,
           "image": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
         }
       ]// Explicit type definition

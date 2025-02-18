@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:joub_jum/consts.dart';
 import 'package:joub_jum/pages/menu_bar_pages/create_joubjum.dart';
+import 'package:provider/provider.dart';
+import '../pages/menu_bar_pages/Provider.dart';
 
 Widget floatingCollapsed() {
   return Container(
@@ -103,6 +105,7 @@ class JoubJumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userDataProvider = Provider.of<UserDataProvider>(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: appBarColor,
@@ -110,7 +113,7 @@ class JoubJumButton extends StatelessWidget {
       ),
       onPressed: () {
         navigateToNextScreen(
-            context, CreateJoubJumPage(location: placeName, placeId: placeID));
+            context, CreateJoubJumPage(location: placeName, placeId: placeID, username: userDataProvider.username));
       },
       child: const Text("+ JoubJum"),
     );
